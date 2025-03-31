@@ -7,3 +7,5 @@ const db = drizzle({
     ssl: true
   }
 });
+
+export default db;

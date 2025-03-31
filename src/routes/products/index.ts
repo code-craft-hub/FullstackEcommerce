@@ -7,6 +7,7 @@ import {
   updateProduct,
 } from "./products";
 
+
 const productRouter = Router();
 productRouter.get("/", listProducts);
 productRouter.get("/:id", getProductById);

@@ -7,13 +7,29 @@ import {
   updateProduct,
 } from "./products";
 import { validateData } from "../../middlewares/validationMiddleware";
-import { createProductSchema, updateProductSchema } from "../../../database/productSchema";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../../../database/productSchema";
+import { verifySeller, verifyToken } from "../../middlewares/authMiddleware";
 
 const productRouter = Router();
 productRouter.get("/", listProducts);
 productRouter.get("/:id", getProductById);
-productRouter.post("/", validateData(createProductSchema), createProduct);
-productRouter.put("/:id", validateData(updateProductSchema),updateProduct);
-productRouter.delete("/:id", deleteProduct);
+productRouter.post(
+  "/",
+  verifyToken,
+  verifySeller,
+  validateData(createProductSchema),
+  createProduct
+);
+productRouter.put(
+  "/:id",
+  verifyToken,
+  verifySeller,
+  validateData(updateProductSchema),
+  updateProduct
+);
+productRouter.delete("/:id", verifyToken, verifySeller, deleteProduct);
 
 export default productRouter;

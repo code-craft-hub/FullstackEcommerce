@@ -31,11 +31,10 @@ export async function getProductById(req: Request, res: Response) {
 }
 
 export async function createProduct(req: Request, res: Response) {
-  console.log(req.body);
   try {
     const [product] = await db
       .insert(productsTable)
-      .values(req.body)
+      .values(req.cleanBody)
       .returning();
     res.status(201).json(product);
   } catch (error) {
@@ -46,11 +45,10 @@ export async function createProduct(req: Request, res: Response) {
 export async function updateProduct(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
-    const updatedFields = req.body;
 
     const [product] = await db
       .update(productsTable)
-      .set(updatedFields)
+      .set(req.cleanBody)
       .where(eq(productsTable.id, id))
       .returning();
 
